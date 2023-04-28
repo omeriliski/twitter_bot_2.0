@@ -5,19 +5,25 @@ import { Link } from "react-router-dom";
 import "./navbar.scss";
 
 const Navbar = () => {
-    const { handleShowLogin, handleShowRegister, activeUser } = useContext(UserContext) as UserContextProps;
+    const { handleShowLogin, handleLogout, handleShowRegister, activeUser } = useContext(UserContext) as UserContextProps;
     console.log('activeUser :>> ', activeUser);
     return (
         <div className="navbar-container">
             <div className="left_navbar">
                 <Link className="link" to="/">Home</Link>
-                <Link className="link" to="/monitoring">Monitoring</Link>
-                <Link className="link" to="/settings">Settings</Link>
+                {
+                    activeUser?.id !=0 ?
+                    <>
+                        <Link className="link" to="/monitoring">Monitoring</Link>
+                        <Link className="link" to="/settings">Settings</Link>
+                    </>
+                    : <></>
+                }
             </div>
             {
-                activeUser ?
+                activeUser?.id !=0 ?
                     <div className="right_navbar">
-                        <h6>{activeUser.email}</h6>
+                        <h6>{activeUser?.email}</h6>
                         <h6 onClick={handleLogout}>Logout</h6>
                     </div>
                     :

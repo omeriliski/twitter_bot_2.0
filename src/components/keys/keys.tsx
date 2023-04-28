@@ -21,7 +21,7 @@ const Keys = () => {
             accessTokenSecret: accessTokenSecret.current.value
         }
         console.log('activeUser :>> ', activeUser);
-        updateDataPrivate(`${process.env.REACT_APP_PORT}/user/updateUser/${activeUser.id}`, keyObject)
+        updateDataPrivate(`${process.env.REACT_APP_PORT}/user/updateUser/${activeUser?.id}`, keyObject)
             .then((res: any) => {
                 console.log('res.data :>> ', res.data);
                 setApiKeys(keyObject);
@@ -33,7 +33,7 @@ const Keys = () => {
     }
 
     const getKeys = () => {
-        fetchDataPrivate(`${process.env.REACT_APP_PORT}/user/getkeys/${activeUser.email}`)
+        fetchDataPrivate(`${process.env.REACT_APP_PORT}/user/getkeys/${activeUser?.email}`)
             .then((res: any) => setApiKeys(res.data))
             .catch(err => console.log('err :>> ', err));
     }

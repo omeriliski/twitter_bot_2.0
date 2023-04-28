@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type ActiveUserProps = {
     id: number,
@@ -25,6 +26,7 @@ export type UserContextProps = {
     handleShowLogin: () => void,
     handleCloseRegister: () => void,
     handleShowRegister: () => void,
+    handleLogout: ()=>void
 }
 
 type ChildrenProps={
@@ -38,6 +40,7 @@ const activeUserFromLocalStorage = JSON.parse(localStorage.getItem("activeUser")
 console.log('activeUserFromLocalStorage :>> ', activeUserFromLocalStorage);
 
 export default function UserContextProvider({ children }: ChildrenProps) {
+    const navigate = useNavigate(); 
 
     const [showLogin, setShowLogin] = useState<boolean>(false);
     const [showRegister, setShowRegister] = useState<boolean>(false);
@@ -51,16 +54,19 @@ export default function UserContextProvider({ children }: ChildrenProps) {
     const handleShowRegister = () => { setShowRegister(true) };
 
     const handleLogout = () => {
-
+        setActiveUser({id:0, email:"", popularAccountsList:[]})
+        navigate("/");
     }
 
     const userVariables = {
         handleCloseLogin, handleShowLogin, showLogin, setShowLogin, activeUser, showRegister, setActiveUser, handleShowRegister, handleCloseRegister,
-        apiKeys, setApiKeys, setShowRegister
+        apiKeys, setApiKeys, setShowRegister, handleLogout
     }
 
+    
     useEffect(() => {
-        if (activeUser) localStorage.setItem("activeUser", JSON.stringify(activeUser));
+        if (activeUser?.id!=0) localStorage.setItem("activeUser", JSON.stringify(activeUser))
+        else localStorage.clear();
     }, [activeUser]);
 
     return (
